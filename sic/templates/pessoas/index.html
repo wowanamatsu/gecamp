@@ -1,0 +1,53 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+<body>
+
+    Pessoas Cadastradas
+    <hr>
+    <a href="/cadastros/" class="btn btn-sm btn-primary">Novo Cadastro</a>
+    <hr>
+
+    <div>
+        {% if message %}
+            {{ message }}
+        {% endif %}
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Nome Social</th>
+                <th>Endereço</th>
+                <th>Sexo</th>
+                <th>D. Nasc.</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for dado in dados %}
+                <tr>
+                    <td>
+                        {{ dado.nome }}
+                    </td>
+                    <td>
+                        {{ dado.nome_social }}
+                    </td>
+                    <th>
+                        {{ dado.endereco }}
+                    </th>
+                    <td>
+                        {{ dado.sexo }}
+                    </td>
+                    <td>
+                        {{ dado.data_nascimento }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

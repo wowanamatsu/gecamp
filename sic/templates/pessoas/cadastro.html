@@ -1,0 +1,33 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+<body>
+
+    Cadastro
+    <hr>
+    <div class="container">
+        <form action="/cadastros/" method="post" novalidate>
+
+            {% csrf_token %}
+
+
+            {% if form.errors %}
+                {{ form.errors }}
+            {% endif %}
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                {{ form }}
+            </div>
+
+
+
+
+            <input type="submit" value="Cadastrar" class="btn btn-sm btn-success">
+
+        </form>
+    </div>
+</body>
+</html>
+
