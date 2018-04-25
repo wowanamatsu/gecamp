@@ -4,7 +4,11 @@ from .models import Pessoa
 from .forms import FormPessoa
 
 
-def index(request):
+def home(request):
+    return render(request, 'pessoas/home.html', {})
+
+
+def pessoas(request):
     dados = Pessoa.objects.all()
     return render(request, 'pessoas/index.html', {'dados':dados})
 
