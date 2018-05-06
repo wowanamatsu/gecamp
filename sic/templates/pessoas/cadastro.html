@@ -2,28 +2,67 @@
 
 {% block content %}
 
-    Cadastro
-    <hr>
-    <div class="container">
-        <form action="{% url 'cadastro_pessoas' %}" method="post" novalidate>
+<div class="container">
 
-            {% csrf_token %}
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Cadastro de Pessoas</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
 
+            <form action="{% url 'cadastro_pessoas' %}" method="post" novalidate>
 
-            {% if form.errors %}
-                {{ form.errors }}
-            {% endif %}
+                {% csrf_token %}
+                <!--'nome', 'nome_social', 'endereco', 'sexo', 'data_nascimento'-->
 
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                {{ form }}
-            </div>
+                <!--{% if form.errors %}-->
+                <!--{{ form.errors }}-->
+                <!--{% endif %}-->
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <label for="id_nome">Nome</label>
+                        {{ form.nome }}
+                        {{ form.errors.nome }}
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <label for="id_nome_social">Apelido</label>
+                        {{ form.nome_social }}
+                        {{ form.errors.nome_social }}
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <label for="id_endereco">Endereço</label>
+                        {{ form.endereco }}
+                        {{ form.errors.endereco }}
+                    </div>
+                </div>
 
-            <input type="submit" value="Cadastrar" class="btn btn-sm btn-success">
-            <a href="{% url 'pessoas' %}" class="btn btn-sm btn-danger">Cancelar</a>
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                        <label for="id_data_nascimento">Data Nascimento</label>
+                        {{ form.data_nascimento }}
+                        {{ form.errors.data_nascimento }}
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                        <label for="id_sexo">Sexo</label>
+                        {{ form.sexo }}
+                        {{ form.errors.sexo }}
+                    </div>
+                </div>
 
-        </form>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        <input type="submit" value="Cadastrar" class="btn btn-sm btn-success">
+                        <a href="{% url 'pessoas' %}" class="btn btn-sm btn-danger">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
-
-{% endblock %}
-
+</div>
+    {% endblock %}
