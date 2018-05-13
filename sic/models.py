@@ -1,5 +1,78 @@
 from django.db import models
 
+
+#===============================================================================================
+class Pais(models.Model):
+
+    nome = models.CharField(max_length=30)
+    codigo = models.CharField(max_length=5, blank=True, null=True)
+
+    def __str__(self): return self.nome
+
+    class Meta:
+        verbose_name = 'Pais'
+        verbose_name_plural = 'Paises'
+        db_table = 'paises'
+
+
+#===============================================================================================
+class Estado(models.Model):
+
+    nome = models.CharField(max_length=30)
+    pais_id = models.ForeignKey('Pais', on_delete=models.CASCADE)
+    sigla = models.CharField(max_length=5)
+
+    def __str__(self): return self.nome
+
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
+        db_table = 'estados'
+
+
+#===============================================================================================
+class Municipio(models.Model):
+
+    nome = models.CharField(max_length=30)
+    estado_id = models.ForeignKey('Estado', on_delete=models.CASCADE)
+
+    def __str__(self): return self.nome
+
+    class Meta:
+        verbose_name = 'Municipio'
+        verbose_name_plural = 'Municipios'
+        db_table = 'municipios'
+
+
+#===============================================================================================
+class Cidade(models.Model):
+
+    nome = models.CharField(max_length=30)
+    municipio_id = models.ForeignKey('Municipio', on_delete=models.CASCADE)
+
+    def __str__(self): return self.nome
+
+    class Meta:
+        verbose_name = 'Cidade'
+        verbose_name_plural = 'Cidades'
+        db_table = 'cidades'
+
+
+#===============================================================================================
+class Bairro(models.Model):
+
+    nome = models.CharField(max_length=30)
+    cidade_id = models.ForeignKey('Cidade', on_delete=models.CASCADE)
+
+    def __str__(self); return self.nome
+
+    class Meta:
+        verbose_name = 'Bairro'
+        verbose_name_plural = 'Bairros'
+        db_table = 'bairros'
+
+
+#===============================================================================================
 class Pessoa(models.Model):
     UF = []
     M_UF = []
@@ -13,26 +86,29 @@ class Pessoa(models.Model):
             ('nao', 'NÃO')
         ), max_length=3, default='nao'
     )
+    
+    # Documentos
     cpf = models.CharField('CPF', max_length=14, blank=True, null=True)
     rg = models.CharField('RG', max_length=10, blank=True, null=True)
     rg_uf = models.IntegerField('RG / UF', choices=UF, blank=True, null=True)
-    titulo = models.CharField('Título', max_length=20, blank=True, null=True)
+    titulo_eleitor = models.CharField('Título', max_length=20, blank=True, null=True)
     titulo_secao = models.CharField('Seção', max_length=6, blank=True, null=True)
     titulo_zona = models.CharField('Zona', max_length=6, blank=True, null=True)
     titulo_uf = models.IntegerField('Título / Município', choices=M_UF, blank=True, null=True)
-    data_nascimento = models.DateField('Aniversário')
+
+    data_nascimento = models.DateField('Data Nasc.', blank=True, null=True)
     sexo = models.CharField(
         choices=(
-            ('M', 'Masculino'),
-            ('F', 'Feminino'),
-        ), max_length=1
+            ('Masculino', 'Masculino'),
+            ('Feminino', 'Feminino'),
+        ), max_length=10
     )
     estado_civil = models.CharField('Estado civil',
                                     choices=(
-                                        ('Casado', 'Casado(a)'),
-                                        ('Solteiro', 'Solteiro(a)'),
+                                        ('Casado(a)', 'Casado(a)'),
+                                        ('Solteiro(a)', 'Solteiro(a)'),
                                         ('Outros', 'Outros'),
-                                    ), max_length=8, default='Solteiro'
+                                    ), max_length=12, default='Solteiro'
                                     )
     naturalidade = models.CharField(max_length=100, blank=True, null=True)
     escolaridade = models.CharField(
