@@ -64,7 +64,7 @@ class Bairro(models.Model):
     nome = models.CharField(max_length=30)
     cidade_id = models.ForeignKey('Cidade', on_delete=models.CASCADE)
 
-    def __str__(self); return self.nome
+    def __str__(self): return self.nome
 
     class Meta:
         verbose_name = 'Bairro'

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+Paises Cadastrados
+<hr>
+<form action="/paises/" method="post">
+{% csrf_token %}	
+{{ form }}
+<input type="submit" name="cadastro_pais" value="Cadastrar">
+</form>
+<hr>
+{% for pais in paises %}
+	<li>
+		{{ pais.nome }} - {{ pais.codigo }}
+	</li>
+{% endfor %}
+
+{% endblock %}
