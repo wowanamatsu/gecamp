@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Pessoa
+from sic.models import Pessoa
 
 
 class FormPessoa(forms.ModelForm):

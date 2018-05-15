@@ -1,11 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
 
-from .models import Pessoa
-from .forms import FormPessoa
+from sic.models import Pessoa
+from sic.forms.pessoa import FormPessoa
 
-from .models import Pais
-from .frmPais import FormPais
-
+from sic.models import Pais
 
 #=============================================================================================
 def home(request):
@@ -30,14 +28,3 @@ def cadastro(request):
     return render(request, 'pessoas/cadastro.html', {'form':form})
 
 
-#=============================================================================================
-def cadastro_pais(request):
-    paises_cadastrados = Pais.objects.all()
-    if request.method == 'POST':
-        form = FormPais(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/paises/')
-    else:
-        form = FormPais()
-    return render(request, 'pais/index.html', {'form':form, 'paises':paises_cadastrados})

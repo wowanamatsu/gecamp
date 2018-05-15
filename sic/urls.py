@@ -1,11 +1,11 @@
 from django.urls import path
 
-from . import views
+from sic.views import paises, pessoas as views
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('pessoas/', views.pessoas, name='pessoas'),
     path('cadastros/', views.cadastro, name='cadastro_pessoas'),
 
-    path('paises/', views.cadastro_pais, name='cadastro_pais'),
+    path('paises/', paises.cadastro_pais, name='cadastro_pais'),
 ]
