@@ -25,6 +25,6 @@ def cadastro(request):
             return HttpResponseRedirect('/pessoas/')
     else:
         form = FormPessoa()
-    return render(request, 'pessoas/cadastro.html', {'form':form})
+    return render(request, 'pessoas/form.html', {'form':form})
 
 

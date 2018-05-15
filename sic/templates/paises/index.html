@@ -4,12 +4,9 @@
 
 Paises Cadastrados
 <hr>
-<form action="/paises/" method="post">
-{% csrf_token %}	
-{{ form }}
-<input type="submit" name="cadastro_pais" value="Cadastrar">
-</form>
+<a href="/pais/novo/" class='btn btn-sm btn-success'>Novo Registro</a>
 <hr>
+
 {% for pais in paises %}
 	<li>
 		{{ pais.nome }} - {{ pais.codigo }}

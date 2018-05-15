@@ -4,8 +4,13 @@ from sic.models import Pais
 from sic.forms.pais import FormPais
 
 
-def cadastro_pais(request):
+def index(request):
     paises_cadastrados = Pais.objects.all()
+    return render(request, 'paises/index.html', {'paises':paises_cadastrados})
+
+
+def cadastro(request):
+    
     if request.method == 'POST':
         form = FormPais(request.POST)
         if form.is_valid():
@@ -13,4 +18,4 @@ def cadastro_pais(request):
             return redirect('/paises/')
     else:
         form = FormPais()
-    return render(request, 'paises/index.html', {'form':form, 'paises':paises_cadastrados})
+    return render(request, 'paises/form.html', {'form':form})
