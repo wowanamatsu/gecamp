@@ -16,5 +16,5 @@ class FormPessoa(forms.ModelForm):
 
     class Meta:
         model = Pessoa
-        fields = ['nome', 'nome_social', 'endereco', 'sexo', 'data_nascimento']
+        fields = '__all__'#['nome', 'nome_social', 'endereco', 'sexo', 'data_nascimento']
         widgets = {}

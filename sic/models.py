@@ -116,7 +116,7 @@ class Pessoa(models.Model):
     M_UF = []
 
     # Dados básicos
-    indicado_por = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    indicado_por = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField(max_length=80)
     nome_social = models.CharField(max_length=80, blank=True, null=True)
     data_nascimento = models.DateField('Data Nasc.', blank=True, null=True)
@@ -132,7 +132,11 @@ class Pessoa(models.Model):
 
     # Formas de contato
     endereco = models.CharField('Endereço', max_length=50)
+    estado_id = models.ForeignKey('Estado', on_delete=models.CASCADE, blank=False, null=True)
+    cidade_id = models.ForeignKey('Cidade', on_delete=models.CASCADE, blank=False, null=True)
+    bairro_id = models.ForeignKey('Bairro', on_delete=models.CASCADE, blank=False, null=True)
     cep = models.CharField('CEP', max_length=14, blank=True, null=True)
+
     email = models.CharField(max_length=80, unique=True, blank=True, null=True)
     telefone_celular = models.CharField('Telefone Celular', max_length=14, blank=True, null=True)
     telefone_residencial = models.CharField('Telenone Residencial', max_length=14, blank=True, null=True)
@@ -160,8 +164,8 @@ class Pessoa(models.Model):
                                     )
     
     
-    escolaridade_id = models.ForeignKey('Escolaridade', null=True, blank=True, on_delete=models.CASCADE)
-    profissao = models.ForeignKey('Profissao', null=True, blank=True, on_delete=models.CASCADE)
+    escolaridade_id = models.ForeignKey('Escolaridade', on_delete=models.CASCADE, blank=True, null=True)
+    profissao = models.ForeignKey('Profissao', on_delete=models.CASCADE, blank=False, null=True)
     criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
     modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
     

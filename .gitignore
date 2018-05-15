@@ -9,6 +9,7 @@ __pycache__/
 db.sqlite3
 
 bat.sh
+migrate.sh
 
 # C extensions
 *.so
