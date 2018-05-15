@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 #===============================================================================================
@@ -6,6 +7,8 @@ class Pais(models.Model):
 
     nome = models.CharField(max_length=30, unique=True)
     codigo = models.CharField(max_length=5, unique=True, blank=True, null=True)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     def __str__(self): return self.nome
 
@@ -21,6 +24,8 @@ class Estado(models.Model):
     nome = models.CharField(max_length=30, unique=True)
     pais_id = models.ForeignKey('Pais', on_delete=models.CASCADE)
     sigla = models.CharField(max_length=5, unique=True)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     def __str__(self): return self.nome
 
@@ -35,6 +40,8 @@ class Municipio(models.Model):
 
     nome = models.CharField(max_length=30)
     estado_id = models.ForeignKey('Estado', on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     def __str__(self): return self.nome
 
@@ -49,6 +56,8 @@ class Cidade(models.Model):
 
     nome = models.CharField(max_length=30)
     municipio_id = models.ForeignKey('Municipio', on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     def __str__(self): return self.nome
 
@@ -63,6 +72,8 @@ class Bairro(models.Model):
 
     nome = models.CharField(max_length=30)
     cidade_id = models.ForeignKey('Cidade', on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     def __str__(self): return self.nome
 
@@ -73,11 +84,39 @@ class Bairro(models.Model):
 
 
 #===============================================================================================
+class Escolaridade(models.Model):
+    nivel_escolar = models.CharField(max_length=30)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
+
+    def __str__(self): return self.nivel_escolar
+
+    class Meta:
+        verbose_name = 'Escolaridade'
+        verbose_name_plural = 'Escolaridades'
+        db_table = 'escolaridades'
+
+
+#===============================================================================================
+class Profissao(models.Model):
+    nome = models.CharField(max_length=30)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
+
+    def __str__(self): return self.nome
+
+    class Meta:
+        verbose_name = 'Profissao'
+        verbose_name_plural = 'Profissões'
+        db_table = 'profissoes'
+
+#===============================================================================================
 class Pessoa(models.Model):
     UF = []
     M_UF = []
 
     # Dados básicos
+    indicado_por = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     nome = models.CharField(max_length=80)
     nome_social = models.CharField(max_length=80, blank=True, null=True)
     data_nascimento = models.DateField('Data Nasc.', blank=True, null=True)
@@ -87,7 +126,18 @@ class Pessoa(models.Model):
             ('Feminino', 'Feminino'),
         ), max_length=10
     )
-    indicado_por = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+    nome_da_mae = models.CharField('Nome da mãe', max_length=80, blank=True, null=True)
+    nome_do_pai = models.CharField('Nome do pai', max_length=80, blank=True, null=True)
+    naturalidade = models.CharField(max_length=100, blank=True, null=True)
+
+    # Formas de contato
+    endereco = models.CharField('Endereço', max_length=50)
+    cep = models.CharField('CEP', max_length=14, blank=True, null=True)
+    email = models.CharField(max_length=80, unique=True, blank=True, null=True)
+    telefone_celular = models.CharField('Telefone Celular', max_length=14, blank=True, null=True)
+    telefone_residencial = models.CharField('Telenone Residencial', max_length=14, blank=True, null=True)
+    telefone_trabalho = models.CharField('Telefone do Trabalho', max_length=14, blank=True, null=True)
+    
 
     
     # Documentos
@@ -108,31 +158,13 @@ class Pessoa(models.Model):
                                         ('Outros', 'Outros'),
                                     ), max_length=12, default='Solteiro'
                                     )
-    naturalidade = models.CharField(max_length=100, blank=True, null=True)
-    escolaridade = models.CharField(
-        choices=(
-            ('efc', 'Ensino Fundamental Completo'),
-            ('efi', 'Ensino Fundamental Incompleto'),
-            ('emc', 'Ensino Médio Completo'),
-            ('emi', 'Ensino Médio Incompleto'),
-            ('ctc', 'Curso Técnico Completo'),
-            ('cti', 'Curso Técnico Incompleto'),
-            ('nsc', 'Curso Superior Completo'),
-            ('nsi', 'Curso Superior Incompleto'),
-            ('mes', 'Mestrado'),
-            ('dr', 'Doutorado'),
-            ('phd', 'Pós-Doutorado'),
-        ), max_length=3, blank=True, null=True
-    )
-    profissao = models.CharField('Profissão', max_length=80, blank=True, null=True)
-    nome_da_mae = models.CharField('Nome da Mãe', max_length=80, blank=True, null=True)
-    nome_do_pai = models.CharField(max_length=80, blank=True, null=True)
-    endereco = models.CharField('Endereço', max_length=50)
-    cep = models.CharField('CEP', max_length=14, blank=True, null=True)
-    email = models.CharField(max_length=80, unique=True, blank=True, null=True)
-    telefone_celular = models.CharField('Telefone Celular', max_length=14, blank=True, null=True)
-    telefone_residencial = models.CharField('Telenone Residencial', max_length=14, blank=True, null=True)
-    telefone_trabalho = models.CharField('Telefone do Trabalho', max_length=14, blank=True, null=True)
+    
+    
+    escolaridade_id = models.ForeignKey('Escolaridade', null=True, blank=True, on_delete=models.CASCADE)
+    profissao = models.ForeignKey('Profissao', null=True, blank=True, on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    modificado_em = models.DateTimeField(auto_now=True, editable=False, null=True)
+    
 
     def __str__(self): return self.nome
 
