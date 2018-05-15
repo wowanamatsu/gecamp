@@ -4,8 +4,8 @@ from django.db import models
 #===============================================================================================
 class Pais(models.Model):
 
-    nome = models.CharField(max_length=30)
-    codigo = models.CharField(max_length=5, blank=True, null=True)
+    nome = models.CharField(max_length=30, unique=True)
+    codigo = models.CharField(max_length=5, unique=True, blank=True, null=True)
 
     def __str__(self): return self.nome
 
@@ -18,9 +18,9 @@ class Pais(models.Model):
 #===============================================================================================
 class Estado(models.Model):
 
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(max_length=30, unique=True)
     pais_id = models.ForeignKey('Pais', on_delete=models.CASCADE)
-    sigla = models.CharField(max_length=5)
+    sigla = models.CharField(max_length=5, unique=True)
 
     def __str__(self): return self.nome
 
@@ -77,15 +77,18 @@ class Pessoa(models.Model):
     UF = []
     M_UF = []
 
+    # Dados básicos
     nome = models.CharField(max_length=80)
     nome_social = models.CharField(max_length=80, blank=True, null=True)
-    indicado_por = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
-    aliado = models.CharField(
+    data_nascimento = models.DateField('Data Nasc.', blank=True, null=True)
+    sexo = models.CharField(
         choices=(
-            ('sim', 'SIM'),
-            ('nao', 'NÃO')
-        ), max_length=3, default='nao'
+            ('Masculino', 'Masculino'),
+            ('Feminino', 'Feminino'),
+        ), max_length=10
     )
+    indicado_por = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
+
     
     # Documentos
     cpf = models.CharField('CPF', max_length=14, blank=True, null=True)
@@ -96,13 +99,8 @@ class Pessoa(models.Model):
     titulo_zona = models.CharField('Zona', max_length=6, blank=True, null=True)
     titulo_uf = models.IntegerField('Título / Município', choices=M_UF, blank=True, null=True)
 
-    data_nascimento = models.DateField('Data Nasc.', blank=True, null=True)
-    sexo = models.CharField(
-        choices=(
-            ('Masculino', 'Masculino'),
-            ('Feminino', 'Feminino'),
-        ), max_length=10
-    )
+    
+    
     estado_civil = models.CharField('Estado civil',
                                     choices=(
                                         ('Casado(a)', 'Casado(a)'),
